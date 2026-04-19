@@ -1,0 +1,328 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Beauty Time — Запись на услуги</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-container">
+        <a href="../index.html" class="logo">BEAUTY <span>TIME</span></a>
+        <div class="right-icons">
+            <a href="profile.html" class="profile-icon"><i class="fas fa-user-circle"></i></a>
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+            <label for="menu-toggle" class="menu-overlay"></label>
+            <div class="nav-links">
+                <label for="menu-toggle" class="close-menu"><i class="fas fa-times"></i></label>
+                <a href="../index.html"><i class="fas fa-home"></i> Главная</a>
+                <a href="about.html"><i class="fas fa-spa"></i> О нас</a>
+                <div class="dropdown" id="services-dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown(event)">
+                        <span><i class="fas fa-cut"></i> Услуги</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content">
+                        <a href="services-hair.html">Парикмахерские услуги</a>
+                        <a href="services-lashes.html">Ресницы</a>
+                        <a href="services-makeup.html">Make up</a>
+                        <a href="services-brows.html">Уход за бровями</a>
+                        <a href="services-nails.html">Ногтевой сервис</a>
+                    </div>
+                </div>
+                <a href="reviews.html"><i class="fas fa-star"></i> Отзывы</a>
+                <a href="contacts.html"><i class="fas fa-phone-alt"></i> Контакты</a>
+               
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="booking-page">
+    <div class="booking-container">
+        <div class="services-section">
+            <h2>Выберите услуги</h2>
+            <div id="services-container"></div>
+            <div id="category-warning" class="category-warning"></div>
+        </div>
+        <div class="cart-section" id="cart-section">
+            <h3><i class="fas fa-shopping-cart"></i> Корзина</h3>
+            <div id="cart-items" class="cart-items"><div class="empty-cart">Корзина пуста</div></div>
+            <div class="cart-total"><span>Итого:</span><span id="total-price">0 ₽</span></div>
+            <div><label><i class="fas fa-user"></i> Мастер</label><div id="masters-container" class="masters-grid"></div></div>
+            <div class="calendar-container"><div class="calendar-header"><span id="current-month"></span><div class="calendar-nav"><button onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button><button onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button></div></div><div class="calendar-weekdays" id="calendar-weekdays"></div><div class="calendar-days" id="calendar-days"></div></div>
+            <div><label><i class="fas fa-clock"></i> Время</label><div id="time-slots" class="time-slots"></div></div>
+            <button id="booking-btn" class="booking-btn" onclick="confirmBooking()" disabled>Записаться</button>
+        </div>
+    </div>
+</div>
+
+<div class="cart-fab" id="cart-fab" onclick="document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth' })">
+    <i class="fas fa-shopping-cart"></i>
+    <span id="cart-badge" class="cart-badge cart-badge-hidden">0</span>
+</div>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-content">
+            <div class="footer-logo">BEAUTY <span>TIME</span></div>
+            <div class="footer-links"><a href="../index.html">Главная</a><a href="about.html">О нас</a><a href="reviews.html">Отзывы</a><a href="contacts.html">Контакты</a></div>
+            <div class="footer-social"><a href="#"><i class="fab fa-instagram"></i></a><a href="#"><i class="fab fa-vk"></i></a><a href="#"><i class="fab fa-whatsapp"></i></a></div>
+        </div>
+        <div class="footer-copyright">© 2026 Beauty Time — студия красоты в Альметьевске</div>
+    </div>
+</footer>
+
+<script>
+    // ===== ВСЕ УСЛУГИ ИЗ СТРАНИЦ =====
+    const serviceCategories = [
+        { id: 'hair', name: 'Парикмахерские услуги', icon: 'fas fa-cut', open: true, services: [
+            { id: 1, name: 'Женская стрижка (короткие)', price: 1800 }, { id: 2, name: 'Женская стрижка (средние)', price: 2200 },
+            { id: 3, name: 'Женская стрижка (длинные)', price: 2600 }, { id: 4, name: 'Мужская модельная стрижка', price: 1500 },
+            { id: 5, name: 'Стрижка машинкой', price: 1000 }, { id: 6, name: 'Стрижка челки', price: 500 },
+            { id: 7, name: 'Укладка феном', price: 1200 }, { id: 8, name: 'Вечерняя укладка', price: 2500 },
+            { id: 9, name: 'Свадебная прическа', price: 4000 }, { id: 10, name: 'Тонирование волос', price: 2500 },
+            { id: 11, name: 'Окрашивание корней', price: 2000 }, { id: 12, name: 'Полное окрашивание', price: 3500 },
+            { id: 13, name: 'Мелирование', price: 3500 }, { id: 14, name: 'Балаяж / Шатуш', price: 4500 },
+            { id: 15, name: 'Сложное колорирование', price: 6000 }, { id: 16, name: 'Кератиновое выпрямление', price: 4500 },
+            { id: 17, name: 'Ботокс для волос', price: 3500 }, { id: 18, name: 'Ламинирование волос', price: 3500 },
+            { id: 19, name: 'SPA-уход для волос', price: 2500 }
+        ] },
+        { id: 'nails', name: 'Ногтевой сервис', icon: 'fas fa-hand-paper', open: false, services: [
+            { id: 20, name: 'Классический маникюр', price: 1000 }, { id: 21, name: 'Аппаратный маникюр', price: 1200 },
+            { id: 22, name: 'Комбинированный маникюр', price: 1300 }, { id: 23, name: 'Маникюр + гель-лак', price: 2000 },
+            { id: 24, name: 'Мужской маникюр', price: 900 }, { id: 25, name: 'SPA-маникюр', price: 1500 },
+            { id: 26, name: 'Снятие гель-лака', price: 400 }, { id: 27, name: 'Классический педикюр', price: 1500 },
+            { id: 28, name: 'Аппаратный педикюр', price: 1800 }, { id: 29, name: 'Педикюр + покрытие', price: 2500 },
+            { id: 30, name: 'Покрытие гель-лак (однотон)', price: 900 }, { id: 31, name: 'Френч', price: 1100 },
+            { id: 32, name: 'Дизайн 1 ногтя', price: 100 }, { id: 33, name: 'Сложный дизайн 1 ногтя', price: 200 },
+            { id: 34, name: 'Наращивание ногтей', price: 2500 }, { id: 35, name: 'Коррекция наращенных ногтей', price: 1800 },
+            { id: 36, name: 'Укрепление ногтей', price: 1500 }
+        ] },
+        { id: 'brows', name: 'Уход за бровями', icon: 'fas fa-eye', open: false, services: [
+            { id: 37, name: 'Коррекция бровей (воск/пинцет)', price: 600 }, { id: 38, name: 'Окрашивание бровей хной', price: 800 },
+            { id: 39, name: 'Окрашивание бровей краской', price: 700 }, { id: 40, name: 'Коррекция + окрашивание', price: 1200 },
+            { id: 41, name: 'Ламинирование бровей', price: 1800 }, { id: 42, name: 'Ботокс для бровей', price: 1500 },
+            { id: 43, name: 'Долговременная укладка бровей', price: 2000 }, { id: 44, name: 'Мужская коррекция бровей', price: 700 }
+        ] },
+        { id: 'lashes', name: 'Ресницы', icon: 'fas fa-eye', open: false, services: [
+            { id: 45, name: 'Классическое наращивание 1D', price: 2000 }, { id: 46, name: 'Объемное наращивание 2D', price: 2500 },
+            { id: 47, name: 'Объемное наращивание 3D', price: 3000 }, { id: 48, name: 'Голливудский объем (4-5D)', price: 3500 },
+            { id: 49, name: 'Лисья эффект (Foxy Eyes)', price: 3000 }, { id: 50, name: 'Кукольный эффект', price: 3000 },
+            { id: 51, name: 'Коррекция ресниц', price: 1200 }, { id: 52, name: 'Снятие наращенных ресниц', price: 500 },
+            { id: 53, name: 'Ламинирование ресниц', price: 2500 }, { id: 54, name: 'Ботокс для ресниц', price: 2000 },
+            { id: 55, name: 'Окрашивание ресниц', price: 800 }, { id: 56, name: 'Биозавивка ресниц', price: 2000 }
+        ] },
+        { id: 'makeup', name: 'Make up', icon: 'fas fa-paint-brush', open: false, services: [
+            { id: 57, name: 'Дневной макияж', price: 2500 }, { id: 58, name: 'Вечерний макияж', price: 3500 },
+            { id: 59, name: 'Свадебный макияж', price: 4500 }, { id: 60, name: 'Фотомакияж', price: 4000 },
+            { id: 61, name: 'Смоки айс', price: 3500 }, { id: 62, name: 'Макияж для выпускного', price: 4000 },
+            { id: 63, name: 'Пробный макияж', price: 2000 }
+        ] }
+    ];
+
+    const masters = {
+        hair: [{ id: 1, name: 'Анна Соколова', spec: 'Парикмахер-колорист' }, { id: 2, name: 'Алексей Кузнецов', spec: 'Парикмахер-универсал' }],
+        nails: [{ id: 3, name: 'Елена Морозова', spec: 'Мастер ногтевого сервиса' }],
+        brows: [{ id: 4, name: 'Шамина Сафия', spec: 'Мастер-бровист' }],
+        lashes: [{ id: 5, name: 'Екатерина Серебрякова', spec: 'Мастер по ресницам' }],
+        makeup: [{ id: 6, name: 'Мария Волкова', spec: 'Визажист' }]
+    };
+    const timeSlots = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+
+    let cart = [];
+    let currentCategory = null;
+    let selectedMaster = null;
+    let currentDate = new Date();
+    let selectedDate = null;
+    let selectedTime = null;
+
+    function renderServices() {
+        const container = document.getElementById('services-container');
+        if (!container) return;
+        let html = '';
+        serviceCategories.forEach((cat, idx) => {
+            const isDisabled = currentCategory !== null && currentCategory !== cat.id;
+            html += `
+                <div class="category-accordion">
+                    <div class="category-header ${cat.open ? 'open' : ''}" onclick="toggleCategory(${idx})">
+                        <span><i class="${cat.icon}"></i> ${cat.name}</span>
+                        <i class="fas fa-chevron-down chevron"></i>
+                    </div>
+                    <div class="category-content ${cat.open ? 'open' : ''}">
+                        <div class="services-grid-category">
+                            ${cat.services.map(s => `
+                                <div class="service-card ${cart.some(i => i.id === s.id) ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}" 
+                                     onclick="${isDisabled ? '' : `toggleService(${s.id}, '${s.name}', ${s.price}, '${cat.id}')`}">
+                                    <div class="service-info">
+                                        <div class="service-name">${s.name}</div>
+                                        <div class="service-price">${s.price} ₽</div>
+                                    </div>
+                                    <div class="add-btn ${isDisabled ? 'disabled' : ''}"><i class="fas fa-plus"></i></div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+        document.getElementById('category-warning').innerHTML = currentCategory ? `⚠️ Вы выбрали услуги из категории "${serviceCategories.find(c => c.id === currentCategory)?.name}". Чтобы выбрать услуги из другой категории, удалите текущие услуги из корзины.` : '';
+    }
+
+    function toggleCategory(idx) {
+        const cat = serviceCategories[idx];
+        cat.open = !cat.open;
+        renderServices();
+    }
+
+    function toggleService(id, name, price, categoryId) {
+        const existing = cart.find(item => item.id === id);
+        if (existing) {
+            removeFromCart(id);
+        } else {
+            if (currentCategory !== null && currentCategory !== categoryId) {
+                alert(`Нельзя смешивать услуги из разных категорий. Сначала удалите услуги из категории "${serviceCategories.find(c => c.id === currentCategory)?.name}"`);
+                return;
+            }
+            cart.push({ id, name, price, categoryId });
+            currentCategory = categoryId;
+            updateCartUI();
+            renderServices();
+            updateMasters();
+            updateCheckForm();
+            updateCartBadge();
+        }
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(item => item.id !== id);
+        if (cart.length === 0) { currentCategory = null; selectedMaster = null; selectedDate = null; selectedTime = null; updateMasters(); renderCalendar(); renderTimeSlots(); }
+        updateCartUI();
+        renderServices();
+        updateCheckForm();
+        updateCartBadge();
+    }
+
+    function updateCartUI() {
+        const cartContainer = document.getElementById('cart-items');
+        const totalSpan = document.getElementById('total-price');
+        const total = cart.reduce((sum, i) => sum + i.price, 0);
+        if (cart.length === 0) { cartContainer.innerHTML = '<div class="empty-cart">Корзина пуста</div>'; totalSpan.textContent = '0 ₽'; return; }
+        cartContainer.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div><div class="cart-item-name">${item.name}</div><div class="cart-item-price">${item.price} ₽</div></div>
+                <button class="cart-remove-btn" onclick="removeFromCart(${item.id})"><i class="fas fa-trash-alt"></i></button>
+            </div>
+        `).join('');
+        totalSpan.textContent = `${total} ₽`;
+    }
+
+    function updateCartBadge() { const badge = document.getElementById('cart-badge'); if (cart.length > 0) { badge.textContent = cart.length; badge.style.display = 'flex'; } else badge.style.display = 'none'; }
+
+    function updateMasters() {
+        const container = document.getElementById('masters-container');
+        if (!currentCategory) { container.innerHTML = '<div class="cart-empty-tip">Сначала выберите услуги</div>'; selectedMaster = null; return; }
+        const list = masters[currentCategory] || [];
+        container.innerHTML = list.map(m => `<div class="master-card ${selectedMaster?.id === m.id ? 'selected' : ''}" onclick="selectMaster(${m.id}, '${m.name}')"><div class="master-name">${m.name}</div><div class="master-spec">${m.spec}</div></div>`).join('');
+    }
+
+    function selectMaster(id, name) { selectedMaster = { id, name }; updateMasters(); updateCheckForm(); }
+
+    function renderCalendar() {
+        const year = currentDate.getFullYear(), month = currentDate.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startDayOfWeek = firstDay.getDay() || 7;
+        document.getElementById('current-month').innerHTML = `${firstDay.toLocaleString('ru-RU', { month: 'long' })} ${year}`;
+        const weekdays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        document.getElementById('calendar-weekdays').innerHTML = weekdays.map(d => `<div>${d}</div>`).join('');
+        let daysHtml = '';
+        for (let i = 1; i < startDayOfWeek; i++) daysHtml += '<div></div>';
+        for (let d = 1; d <= lastDay.getDate(); d++) {
+            const dateStr = new Date(year, month, d).toISOString().split('T')[0];
+            const isSelected = selectedDate === dateStr;
+            daysHtml += `<div class="calendar-day ${isSelected ? 'selected' : ''}" onclick="selectDate('${dateStr}')">${d}</div>`;
+        }
+        document.getElementById('calendar-days').innerHTML = daysHtml;
+    }
+
+    function selectDate(dateStr) { selectedDate = dateStr; renderCalendar(); updateCheckForm(); }
+    function changeMonth(delta) { currentDate.setMonth(currentDate.getMonth() + delta); renderCalendar(); }
+
+    function renderTimeSlots() {
+        const container = document.getElementById('time-slots');
+        container.innerHTML = timeSlots.map(t => `<div class="time-slot ${selectedTime === t ? 'selected' : ''}" onclick="selectTime('${t}')">${t}</div>`).join('');
+    }
+    function selectTime(time) { selectedTime = time; renderTimeSlots(); updateCheckForm(); }
+
+    function updateCheckForm() { document.getElementById('booking-btn').disabled = !(cart.length && selectedMaster && selectedDate && selectedTime); }
+
+    function confirmBooking() {
+        if (!cart.length || !selectedMaster || !selectedDate || !selectedTime) return alert('Заполните все поля');
+        const total = cart.reduce((s, i) => s + i.price, 0);
+        const serviceNames = cart.map(i => i.name).join(', ');
+        const user = JSON.parse(localStorage.getItem('beautyTime_user'));
+        if (user) {
+            const apps = JSON.parse(localStorage.getItem(`appointments_${user.phone}`)) || [];
+            apps.push({ id: Date.now(), serviceId: cart.map(i => i.id), serviceName: serviceNames, price: total, masterId: selectedMaster.id, masterName: selectedMaster.name, date: selectedDate, time: selectedTime });
+            localStorage.setItem(`appointments_${user.phone}`, JSON.stringify(apps));
+        }
+        alert(`✅ Запись создана!\n\n📋 ${serviceNames}\n👤 ${selectedMaster.name}\n📅 ${selectedDate}\n⏰ ${selectedTime}\n💰 ${total} ₽`);
+        window.location.href = 'profile.html';
+    }
+
+    function init() { renderServices(); updateMasters(); renderCalendar(); renderTimeSlots(); updateCartBadge(); }
+    function toggleDropdown(e) { e.stopPropagation(); document.getElementById('services-dropdown').classList.toggle('active'); }
+    window.onload = init;
+     // Перенаправление иконки профиля в зависимости от роли пользователя
+    const profileIcon = document.querySelector('.profile-icon');
+    if (profileIcon) {
+        const savedUser = localStorage.getItem('beautyTime_user');
+        if (savedUser) {
+            const user = JSON.parse(savedUser);
+            if (user.isAdmin) {
+                profileIcon.href = 'admin.html';
+            } else {
+                profileIcon.href = 'profile.html';
+            }
+        } else {
+            profileIcon.href = 'profile.html';
+        }
+    }
+</script>
+<div class="scroll-top-btn" id="scrollTopBtn">
+    <i class="fas fa-arrow-up"></i>
+</div>
+
+<script>
+    // Кнопка "Наверх"
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add('show');
+        } else {
+            scrollTopBtn.classList.remove('show');
+        }
+    });
+    
+    scrollTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+</body>
+</html>
+

@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Beauty Time — Оформление записи</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">BEAUTY <span>TIME</span></a>
+            <div class="right-icons">
+                <a href="profile.html" class="profile-icon" id="profileLink"><i class="fas fa-user-circle"></i></a>
+                <input type="checkbox" id="menu-toggle">
+                <label for="menu-toggle" class="menu-icon"><i class="fas fa-bars"></i></label>
+                <label for="menu-toggle" class="menu-overlay"></label>
+                <div class="nav-links">
+                    <label for="menu-toggle" class="close-menu"><i class="fas fa-times"></i></label>
+                    <a href="../index.html"><i class="fas fa-home"></i> Главная</a>
+                    <a href="about.html"><i class="fas fa-spa"></i> О нас</a>
+                    <div class="dropdown" id="services-dropdown">
+                        <div class="dropdown-header" onclick="toggleDropdown(event)">
+                            <span><i class="fas fa-cut"></i> Услуги</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="dropdown-content">
+                            <a href="services-hair.html">Парикмахерские услуги</a>
+                            <a href="services-lashes.html">Ресницы</a>
+                            <a href="services-makeup.html">Make up</a>
+                            <a href="services-brows.html">Уход за бровями</a>
+                            <a href="services-nails.html">Ногтевой сервис</a>
+                        </div>
+                    </div>
+                    <a href="reviews.html"><i class="fas fa-star"></i> Отзывы</a>
+                    <a href="contacts.html"><i class="fas fa-phone-alt"></i> Контакты</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="booking-container">
+        <h1 class="booking-title-centered">Оформление записи</h1>
+
+        <!-- Шаг 1: Выбор категории и услуг -->
+        <div class="booking-card" id="step1">
+            <h2>Шаг 1: Выберите услуги</h2>
+            <div class="form-group">
+                <label>Категория</label>
+                <div class="custom-select-wrapper" id="categorySelectWrapper">
+                    <div class="custom-select-trigger">
+                        <span>-- Выберите категорию --</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="custom-select-options"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Услуги (можно выбрать несколько)</label>
+                <div id="servicesContainer" class="services-list">
+                    <p class="booking-placeholder">Сначала выберите категорию</p>
+                </div>
+                <div id="totalCalculator" class="total-calculator">
+                    Итого: <span id="totalAmount">0</span> ₽
+                </div>
+            </div>
+            <div class="step-buttons">
+                <button class="btn" onclick="nextStep(2)">Продолжить</button>
+            </div>
+        </div>
+
+        <!-- Шаг 2: Выбор мастера -->
+        <div class="booking-card" id="step2">
+            <h2>Шаг 2: Выберите мастера</h2>
+            <div id="mastersList" class="masters-grid"></div>
+            <div class="step-buttons">
+                <button class="btn btn-back" onclick="prevStep(1)">Назад</button>
+                <button class="btn" onclick="nextStep(3)">Продолжить</button>
+            </div>
+        </div>
+
+        <!-- Шаг 3: Выбор даты -->
+        <div class="booking-card" id="step3">
+            <h2>Шаг 3: Выберите дату</h2>
+            <div id="calendarWidget"></div>
+            <div class="step-buttons">
+                <button class="btn btn-back" onclick="prevStep(2)">Назад</button>
+                <button class="btn" onclick="nextStep(4)">Продолжить</button>
+            </div>
+        </div>
+
+        <!-- Шаг 4: Выбор времени -->
+        <div class="booking-card" id="step4">
+            <h2>Шаг 4: Выберите время</h2>
+            <div id="timeSlots" class="time-slots"></div>
+            <div class="step-buttons">
+                <button class="btn btn-back" onclick="prevStep(3)">Назад</button>
+                <button class="btn" onclick="nextStep(5)">Продолжить</button>
+            </div>
+        </div>
+
+        <!-- Шаг 5: Подтверждение -->
+        <div class="booking-card" id="step5">
+            <h2>Шаг 5: Подтверждение записи</h2>
+            <div id="summary" class="summary-block"></div>
+            <div class="step-buttons">
+                <button class="btn btn-back" onclick="prevStep(4)">Назад</button>
+                <button class="btn" onclick="confirmBooking()">Подтвердить запись</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-top-btn" id="scrollTopBtn"><i class="fas fa-arrow-up"></i></div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-logo">BEAUTY <span>TIME</span></div>
+                <div class="footer-links">
+                    <a href="../index.html">Главная</a>
+                    <a href="about.html">О нас</a>
+                    <a href="reviews.html">Отзывы</a>
+                    <a href="contacts.html">Контакты</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div class="footer-copyright">© 2026 Beauty Time — студия красоты в Альметьевске</div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== ПОЛНЫЙ КАТАЛОГ УСЛУГ =====
+        const categories = {
+            hair: {
+                name: 'Парикмахерские услуги',
+                services: [
+                    { id: 1, name: 'Женская стрижка', price: 1500 },
+                    { id: 2, name: 'Мужская стрижка', price: 1200 },
+                    { id: 3, name: 'Окрашивание', price: 3500 },
+                    { id: 4, name: 'Тонирование', price: 2000 },
+                    { id: 5, name: 'Кератиновое выпрямление', price: 4000 },
+                    { id: 6, name: 'Укладка феном', price: 1200 },
+                    { id: 7, name: 'Вечерняя прическа', price: 2500 },
+                    { id: 8, name: 'Свадебная прическа', price: 4000 },
+                    { id: 9, name: 'Модельная стрижка (короткие)', price: 1800 },
+                    { id: 10, name: 'Модельная стрижка (средние)', price: 2200 },
+                    { id: 11, name: 'Модельная стрижка (длинные)', price: 2600 },
+                    { id: 12, name: 'Стрижка челки', price: 500 },
+                    { id: 13, name: 'Детская стрижка (до 7 лет)', price: 1000 },
+                    { id: 14, name: 'Детская стрижка (7-12 лет)', price: 1200 },
+                    { id: 15, name: 'Детская стрижка (12+)', price: 1400 },
+                    { id: 16, name: 'Мужская стрижка машинкой', price: 1000 },
+                    { id: 17, name: 'Стрижка бороды и усов', price: 800 },
+                    { id: 18, name: 'Окрашивание корней', price: 2000 },
+                    { id: 19, name: 'Полное окрашивание (короткие)', price: 2500 },
+                    { id: 20, name: 'Полное окрашивание (средние)', price: 3500 },
+                    { id: 21, name: 'Полное окрашивание (длинные)', price: 4500 },
+                    { id: 22, name: 'Мелирование', price: 3500 },
+                    { id: 23, name: 'Балаяж / Шатуш', price: 4500 },
+                    { id: 24, name: 'Сложное колорирование', price: 6000 },
+                    { id: 25, name: 'AirTouch', price: 5000 },
+                    { id: 26, name: 'Омбре', price: 4500 },
+                    { id: 27, name: 'Ботокс для волос', price: 3000 },
+                    { id: 28, name: 'Ламинирование волос', price: 3500 },
+                    { id: 29, name: 'SPA-уход для волос', price: 2500 },
+                    { id: 30, name: 'Пилинг кожи головы', price: 2000 }
+                ]
+            },
+            lashes: {
+                name: 'Ресницы',
+                services: [
+                    { id: 31, name: 'Классическое наращивание (1D)', price: 2000 },
+                    { id: 32, name: 'Объемное наращивание 2D', price: 2500 },
+                    { id: 33, name: 'Объемное наращивание 3D', price: 3000 },
+                    { id: 34, name: 'Голливудский объем (4-5D)', price: 3500 },
+                    { id: 35, name: 'Лисья эффект (Foxy Eyes)', price: 3000 },
+                    { id: 36, name: 'Кукольный эффект', price: 3000 },
+                    { id: 37, name: 'Коррекция ресниц (до 2-х недель)', price: 1200 },
+                    { id: 38, name: 'Коррекция ресниц (до 3-х недель)', price: 1500 },
+                    { id: 39, name: 'Снятие наращенных ресниц', price: 500 },
+                    { id: 40, name: 'Ламинирование ресниц', price: 2500 },
+                    { id: 41, name: 'Ботокс для ресниц', price: 2000 },
+                    { id: 42, name: 'Окрашивание ресниц', price: 800 },
+                    { id: 43, name: 'Биозавивка ресниц', price: 2000 }
+                ]
+            },
+            makeup: {
+                name: 'Make up',
+                services: [
+                    { id: 44, name: 'Дневной макияж', price: 2500 },
+                    { id: 45, name: 'Вечерний макияж', price: 3500 },
+                    { id: 46, name: 'Свадебный макияж', price: 4500 },
+                    { id: 47, name: 'Свадебный макияж (с выездом)', price: 5500 },
+                    { id: 48, name: 'Фотомакияж', price: 4000 },
+                    { id: 49, name: 'Смоки айс', price: 3500 },
+                    { id: 50, name: 'Макияж для выпускного', price: 4000 },
+                    { id: 51, name: 'Пробный макияж', price: 2000 },
+                    { id: 52, name: 'Курс по макияжу (3 занятия)', price: 8000 }
+                ]
+            },
+            brows: {
+                name: 'Уход за бровями',
+                services: [
+                    { id: 53, name: 'Коррекция бровей (воск/пинцет)', price: 600 },
+                    { id: 54, name: 'Окрашивание бровей хной', price: 800 },
+                    { id: 55, name: 'Окрашивание бровей краской', price: 700 },
+                    { id: 56, name: 'Коррекция + окрашивание', price: 1200 },
+                    { id: 57, name: 'Ламинирование бровей', price: 1800 },
+                    { id: 58, name: 'Ботокс для бровей', price: 1500 },
+                    { id: 59, name: 'Долговременная укладка бровей', price: 2000 },
+                    { id: 60, name: 'Мужская коррекция бровей', price: 700 }
+                ]
+            },
+            nails: {
+                name: 'Ногтевой сервис',
+                services: [
+                    { id: 61, name: 'Классический маникюр (обрезной)', price: 1000 },
+                    { id: 62, name: 'Аппаратный маникюр', price: 1200 },
+                    { id: 63, name: 'Комбинированный маникюр', price: 1300 },
+                    { id: 64, name: 'Европейский маникюр', price: 1100 },
+                    { id: 65, name: 'Мужской маникюр', price: 900 },
+                    { id: 66, name: 'Маникюр + покрытие гель-лак', price: 2000 },
+                    { id: 67, name: 'SPA-маникюр', price: 1500 },
+                    { id: 68, name: 'Японский маникюр', price: 1800 },
+                    { id: 69, name: 'Снятие гель-лака', price: 400 },
+                    { id: 70, name: 'Классический педикюр (обрезной)', price: 1500 },
+                    { id: 71, name: 'Аппаратный педикюр', price: 1800 },
+                    { id: 72, name: 'Комбинированный педикюр', price: 1700 },
+                    { id: 73, name: 'Медицинский педикюр', price: 2500 },
+                    { id: 74, name: 'SPA-педикюр', price: 2000 },
+                    { id: 75, name: 'Педикюр + покрытие гель-лак', price: 2500 },
+                    { id: 76, name: 'Мужской педикюр', price: 1500 },
+                    { id: 77, name: 'Покрытие гель-лак (однотон)', price: 900 },
+                    { id: 78, name: 'Френч (классический)', price: 1100 },
+                    { id: 79, name: 'Дизайн 1 ногтя', price: 100 },
+                    { id: 80, name: 'Сложный дизайн 1 ногтя', price: 200 },
+                    { id: 81, name: 'Стемпинг', price: 300 },
+                    { id: 82, name: 'Аквариумный дизайн', price: 500 },
+                    { id: 83, name: 'Наращивание ногтей (гель)', price: 2500 },
+                    { id: 84, name: 'Наращивание ногтей (акригель)', price: 2300 },
+                    { id: 85, name: 'Коррекция наращенных ногтей', price: 1800 },
+                    { id: 86, name: 'Укрепление ногтей', price: 1500 }
+                ]
+            }
+        };
+
+        // Мастера
+        const masters = [
+            { id: 1, name: 'Анна Соколова', spec: 'Мастер-колорист', avatar: '👩‍🦰', serviceIds: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] },
+            { id: 2, name: 'Алексей Кузнецов', spec: 'Парикмахер-универсал', avatar: '👨', serviceIds: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] },
+            { id: 3, name: 'Шамина Сафия', spec: 'Мастер-бровист', avatar: '👩', serviceIds: [53,54,55,56,57,58,59,60] },
+            { id: 4, name: 'Ксения Зорина', spec: 'Мастер-бровист', avatar: '👩', serviceIds: [53,54,55,56,57,58,59,60] },
+            { id: 5, name: 'Мария Волкова', spec: 'Визажист', avatar: '👩‍🎨', serviceIds: [44,45,46,47,48,49,50,51,52] },
+            { id: 6, name: 'Екатерина Серебрякова', spec: 'Мастер по ресницам', avatar: '👩', serviceIds: [31,32,33,34,35,36,37,38,39,40,41,42,43] },
+            { id: 7, name: 'Елена Морозова', spec: 'Мастер ногтевого сервиса', avatar: '💅', serviceIds: [61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86] },
+            { id: 8, name: 'Ольга Дмитриева', spec: 'Мастер по ресницам', avatar: '👩', serviceIds: [31,32,33,34,35,36,37,38,39,40,41,42,43] },
+            { id: 9, name: 'Наталья Ковальчук', spec: 'Мастер ногтевого сервиса', avatar: '💅', serviceIds: [61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86] },
+            { id: 10, name: 'Виктория Смирнова', spec: 'Визажист', avatar: '👩‍🎨', serviceIds: [44,45,46,47,48,49,50,51,52] }
+        ];
+
+        const timeSlots = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+
+        let currentStep = 1;
+        let bookingData = {
+            categoryKey: null,
+            selectedServices: [],
+            masterId: null,
+            masterName: null,
+            date: null,
+            time: null
+        };
+        let currentCalendarDate = new Date();
+        let selectedDateStr = null;
+
+        // Инициализация кастомного селекта
+        function initCustomSelect() {
+            const wrapper = document.getElementById('categorySelectWrapper');
+            const trigger = wrapper.querySelector('.custom-select-trigger');
+            const optionsContainer = wrapper.querySelector('.custom-select-options');
+            
+            // Категории для выбора
+            const categoriesList = [
+                { value: '', text: '-- Выберите категорию --' },
+                { value: 'hair', text: 'Парикмахерские услуги' },
+                { value: 'lashes', text: 'Ресницы' },
+                { value: 'makeup', text: 'Make up' },
+                { value: 'brows', text: 'Уход за бровями' },
+                { value: 'nails', text: 'Ногтевой сервис' }
+            ];
+            
+            optionsContainer.innerHTML = '';
+            
+            categoriesList.forEach(cat => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'custom-select-option';
+                optionDiv.textContent = cat.text;
+                optionDiv.dataset.value = cat.value;
+                optionDiv.onclick = (e) => {
+                    e.stopPropagation();
+                    // Обновляем отображение
+                    trigger.querySelector('span').textContent = cat.text;
+                    // Сохраняем выбранную категорию
+                    const selectedValue = cat.value;
+                    bookingData.categoryKey = selectedValue;
+                    // Отображаем услуги
+                    if (selectedValue && categories[selectedValue]) {
+                        renderServicesList(categories[selectedValue].services);
+                    } else {
+                        document.getElementById('servicesContainer').innerHTML = '<p class="booking-placeholder">Сначала выберите категорию</p>';
+                        document.getElementById('totalCalculator').style.display = 'none';
+                        bookingData.selectedServices = [];
+                        updateTotal();
+                    }
+                    // Убираем выделение с других опций
+                    optionsContainer.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
+                    optionDiv.classList.add('selected');
+                    // Закрываем дропдаун
+                    wrapper.classList.remove('open');
+                };
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Открытие/закрытие дропдауна
+            trigger.onclick = (e) => {
+                e.stopPropagation();
+                wrapper.classList.toggle('open');
+            };
+            
+            // Закрытие при клике вне
+            document.addEventListener('click', (e) => {
+                if (!wrapper.contains(e.target)) {
+                    wrapper.classList.remove('open');
+                }
+            });
+        }
+
+        function renderServicesList(services) {
+            const container = document.getElementById('servicesContainer');
+            container.innerHTML = services.map(s => `
+                <div class="service-item" data-id="${s.id}" data-price="${s.price}" data-name="${s.name}" onclick="toggleService(${s.id}, ${s.price}, '${s.name}')">
+                    <input type="checkbox" ${bookingData.selectedServices.some(sel => sel.id === s.id) ? 'checked' : ''}>
+                    <div class="service-info">
+                        <div class="service-name">${s.name}</div>
+                        <div class="service-price">${s.price} ₽</div>
+                    </div>
+                </div>
+            `).join('');
+            updateTotal();
+            if (bookingData.selectedServices.length > 0) {
+                document.getElementById('totalCalculator').style.display = 'block';
+            } else {
+                document.getElementById('totalCalculator').style.display = 'none';
+            }
+        }
+
+        function toggleService(id, price, name) {
+            const index = bookingData.selectedServices.findIndex(s => s.id === id);
+            if (index === -1) {
+                bookingData.selectedServices.push({ id, name, price });
+            } else {
+                bookingData.selectedServices.splice(index, 1);
+            }
+            const items = document.querySelectorAll('.service-item');
+            for (let item of items) {
+                if (parseInt(item.dataset.id) === id) {
+                    item.querySelector('input').checked = (index === -1);
+                    break;
+                }
+            }
+            updateTotal();
+            if (bookingData.selectedServices.length > 0) {
+                document.getElementById('totalCalculator').style.display = 'block';
+            } else {
+                document.getElementById('totalCalculator').style.display = 'none';
+            }
+        }
+
+        function updateTotal() {
+            const total = bookingData.selectedServices.reduce((sum, s) => sum + s.price, 0);
+            document.getElementById('totalAmount').innerText = total;
+        }
+
+        function renderMasters() {
+            const container = document.getElementById('mastersList');
+            if (bookingData.selectedServices.length === 0) {
+                container.innerHTML = '<p>Сначала выберите услуги</p>';
+                return;
+            }
+            const selectedServiceIds = bookingData.selectedServices.map(s => s.id);
+            const availableMasters = masters.filter(m => 
+                selectedServiceIds.some(sid => m.serviceIds.includes(sid))
+            );
+            
+            if (availableMasters.length === 0) {
+                container.innerHTML = '<p>Нет доступных мастеров для выбранных услуг</p>';
+                return;
+            }
+            container.innerHTML = availableMasters.map(m => `
+                <div class="master-card" data-id="${m.id}" data-name="${m.name}" onclick="selectMaster(${m.id}, '${m.name}')">
+                    <div class="master-avatar">${m.avatar}</div>
+                    <div class="master-info">
+                        <h4>${m.name}</h4>
+                        <p>${m.spec}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectMaster(id, name) {
+            bookingData.masterId = id;
+            bookingData.masterName = name;
+            document.querySelectorAll('.master-card').forEach(card => card.classList.remove('selected'));
+            document.querySelector(`.master-card[data-id="${id}"]`).classList.add('selected');
+        }
+
+        function renderCalendar() {
+            const container = document.getElementById('calendarWidget');
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const startWeekday = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            let calendarHtml = `
+                <div class="calendar-header">
+                    <div class="calendar-nav" onclick="changeMonth(-1)">←</div>
+                    <div class="calendar-month">${firstDay.toLocaleString('ru', { month: 'long', year: 'numeric' })}</div>
+                    <div class="calendar-nav" onclick="changeMonth(1)">→</div>
+                </div>
+                <div class="calendar-weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div>
+                <div class="calendar-days">`;
+            let day = 1;
+            for (let i = 0; i < 42; i++) {
+                if (i < startWeekday || day > daysInMonth) {
+                    calendarHtml += `<div class="calendar-day disabled"></div>`;
+                } else {
+                    const date = new Date(year, month, day);
+                    const dateStr = date.toISOString().split('T')[0];
+                    const isSelected = (selectedDateStr === dateStr);
+                    const isPast = date < today;
+                    const disabledClass = isPast ? 'disabled' : '';
+                    calendarHtml += `<div class="calendar-day ${isSelected ? 'selected' : ''} ${disabledClass}" data-date="${dateStr}" onclick="selectDate('${dateStr}', this)">${day}</div>`;
+                    day++;
+                }
+            }
+            calendarHtml += `</div>`;
+            container.innerHTML = calendarHtml;
+        }
+
+        function changeMonth(delta) {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + delta);
+            renderCalendar();
+        }
+
+        function selectDate(dateStr, element) {
+            if (element.classList.contains('disabled')) return;
+            bookingData.date = dateStr;
+            selectedDateStr = dateStr;
+            document.querySelectorAll('.calendar-day').forEach(day => day.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function renderTimeSlots() {
+            const container = document.getElementById('timeSlots');
+            container.innerHTML = timeSlots.map(t => `<div class="time-slot" data-time="${t}" onclick="selectTime('${t}')">${t}</div>`).join('');
+        }
+
+        function selectTime(time) {
+            bookingData.time = time;
+            document.querySelectorAll('.time-slot').forEach(slot => slot.classList.remove('selected'));
+            document.querySelector(`.time-slot[data-time="${time}"]`).classList.add('selected');
+        }
+
+        function renderSummary() {
+            const servicesHtml = bookingData.selectedServices.map(s => `<div>${s.name} — ${s.price} ₽</div>`).join('');
+            const total = bookingData.selectedServices.reduce((sum, s) => sum + s.price, 0);
+            document.getElementById('summary').innerHTML = `
+                <div class="summary-item"><span>Услуги:</span><span>${servicesHtml}</span></div>
+                <div class="summary-item"><span>Общая стоимость:</span><span>${total} ₽</span></div>
+                <div class="summary-item"><span>Мастер:</span><span>${bookingData.masterName}</span></div>
+                <div class="summary-item"><span>Дата:</span><span>${bookingData.date}</span></div>
+                <div class="summary-item"><span>Время:</span><span>${bookingData.time}</span></div>
+                <div class="summary-item total-price"><span>Итого к оплате:</span><span>${total} ₽</span></div>
+            `;
+        }
+
+        function nextStep(step) {
+            if (step === 2 && bookingData.selectedServices.length === 0) { alert('Выберите хотя бы одну услугу'); return; }
+            if (step === 3 && !bookingData.masterId) { alert('Выберите мастера'); return; }
+            if (step === 4 && !bookingData.date) { alert('Выберите дату'); return; }
+            if (step === 5 && !bookingData.time) { alert('Выберите время'); return; }
+            if (step === 2) renderMasters();
+            if (step === 3) renderCalendar();
+            if (step === 4) renderTimeSlots();
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+            if (step === 5) renderSummary();
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step${currentStep}`).style.display = 'none';
+            currentStep = step;
+            document.getElementById(`step${currentStep}`).style.display = 'block';
+        }
+
+        function confirmBooking() {
+            const currentUser = JSON.parse(localStorage.getItem('beautyTime_user'));
+            if (!currentUser) { alert('Пожалуйста, войдите в аккаунт'); window.location.href = 'profile.html'; return; }
+            const appointments = JSON.parse(localStorage.getItem(`appointments_${currentUser.phone}`)) || [];
+            appointments.push({
+                id: Date.now(),
+                services: bookingData.selectedServices,
+                totalPrice: bookingData.selectedServices.reduce((sum, s) => sum + s.price, 0),
+                masterId: bookingData.masterId,
+                masterName: bookingData.masterName,
+                date: bookingData.date,
+                time: bookingData.time,
+                createdAt: new Date().toISOString()
+            });
+            localStorage.setItem(`appointments_${currentUser.phone}`, JSON.stringify(appointments));
+            alert('Запись успешно создана!');
+            window.location.href = 'profile.html';
+        }
+
+        function toggleDropdown(e) { e.stopPropagation(); document.getElementById('services-dropdown').classList.toggle('active'); }
+
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (scrollTopBtn) {
+            window.addEventListener('scroll', () => scrollTopBtn.classList.toggle('show', window.scrollY > 300));
+            scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+
+        window.onload = () => {
+            initCustomSelect();
+            renderTimeSlots();
+        };
+        
+    </script>
+    
+</body>
+</html>
+
